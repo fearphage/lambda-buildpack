@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# install nvm, npm, node 6.5.0 
+./src/install-node.sh
+
+#install serverless framework
+npm install -g serverless
+
+# install deployer command line tool
+pushd ./src/deployer && npm install -g  && popd
+
+
+
+
+
+
+# Deprecated ------------------------------------------------------------------------------
+#  This buildpack uses python scripts that must be built
+
+
+
+
+
+# 1 - download the python buildback to build python
+#git clone https://github.com/igroff/heroku-buildpack-python.git#starphleet ./tmp-python
+
+
+# 2 - Existing built app will be overwritten. So copy app to another location before building lambda-deploy
+#     We use the python buildpack pre-compile feature to do this.
+
+
+# python /var/etc/lambda-deploy.py $1 $2 $3
