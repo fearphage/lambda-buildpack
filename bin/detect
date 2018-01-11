@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+# simply exit so that complie script is executed by multipack script
 exit 0
