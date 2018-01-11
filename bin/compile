@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # install nvm, npm, node 6.5.0 
-./src/install-node.sh
+#./src/install-node.sh
 
 #install serverless framework
-npm install -g serverless
+#npm install -g serverless
 
 # install deployer command line tool
-pushd ./src/deployer && npm install -g  && popd
+#pushd ./src/deployer && npm install -g  && popd
 
 # deploy app to lambda
-node index.js --path /home/ubuntu/app --runtime nodejs6.10  
+#node index.js --path /home/ubuntu/app --runtime nodejs6.10  
+
+echo "compile"
