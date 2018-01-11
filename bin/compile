@@ -11,4 +11,4 @@
 # deploy app to lambda
 #node index.js --path /home/ubuntu/app --runtime nodejs6.10  
 
-echo "compile"
+echo "compile $1" 
