@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 export
-echo $SCRIPTPATH
+# Runtime not needed as part of buildpack, since it is included in lambda
+# We use a node cli to deploy, it is installed in ./heroku directory.
+# This prevents deployment since files are in use with in the dir being deployed.
+# Therefore remove ./heroku directory
+rm -rf $1/.heroku
+
 # install nvm, npm, node 6.5.0 
 echo "" && echo "Install Node ---- "
-chmod +x ${SCRIPTPATH}/../src/install-node.sh
-${SCRIPTPATH}/../src/install-node.sh
+# install nvm
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# install node v6.5.0 required by serverless
+nvm install 6.5.0
+
+# Use this version of node
+nvm use 6.5.0
+
+# make version 6.5.0 the default version
+nvm alias default node
 
 #install serverless framework
 echo "" && echo "Install Serverless npm package ---"
