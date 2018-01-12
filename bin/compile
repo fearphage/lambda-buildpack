@@ -33,9 +33,9 @@ nvm alias default node
 
 #copy version of node and npm to /usr/local/bin
 n=$(which node); \
-n=${n%/bin/node}; \
-chmod -R 755 $n/bin/*; \
-sudo cp -r $n/{bin,lib,share} /usr/local
+n=${n%/bin/node}; 
+sudo ln -s "$n/bin/node" "/usr/local/bin/node"
+sudo ln -s "$n/bin/npm" "/usr/local/bin/npm"
 
 
 #install serverless framework
