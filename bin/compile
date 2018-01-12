@@ -2,6 +2,7 @@
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # install nvm, npm, node 6.5.0 
+chmod +x ${SCRIPTPATH}/../src/install-node.sh
 ${SCRIPTPATH}/../src/install-node.sh
 
 #install serverless framework
