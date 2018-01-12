@@ -31,12 +31,13 @@ if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
 }
 
 const tmpDir = "tmp_app"
+console.log( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
 // 1 - Copy build App directory to temp working directory
 var cmd = "cp -a " + program.path + " ./" + tmpDir;
 stdout = execSync(cmd);
-console.log( "Copied app directory '"+ program.path +"' to new temporary deploy directory ")
 
 // 2 - Create Serverless Framework config file in app root
+console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
 //   - setup template
@@ -50,21 +51,21 @@ yaml = Mustache.render(yaml, data )
 
 //  - Write the config file  
 fs.writeFileSync(tmpDir + '/serverless.yml',yaml);
-console.log('Wrote  Serverless config to root app directory')
 
 // 3 - Add lambda handler (index.hanlder) file to the app root
 // Note: expects express app to be available in app.js file in the apps root directory
+console.log("Copying lambda handler file to app root")
 stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/index.js", {stdio:[0,1,2]});
-console.log("Finished copying lambda handler file to app root")
 
 // 4 - Install serverless-http package needed to use express app in lambda
+console.log("Installing serverless-http node package", {stdio:[0,1,2]})
 stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
-console.log("Finished Installing serverless-http node package", {stdio:[0,1,2]})
 
 // 5 - Call serverless deploy on the temp app directory
+console.log("Deploying app to Lambda")
 stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
 
 // 6 - Remove the temp app directory
-stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
+// stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
 console.log('Done   ')
 
