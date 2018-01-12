@@ -31,21 +31,12 @@ nvm alias default node
 
 #Other shells may need node. So add nvm version of node and npm to /usr/local/bin
 
+#copy version of node and npm to /usr/local/bin
+n=$(which node); \
+n=${n%/bin/node}; \
+chmod -R 755 $n/bin/*; \
+sudo cp -r $n/{bin,lib,share} /usr/local
 
-cat << EOF > "/usr/local/bin/node"
-#!/bin/bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-node \$@
-EOF
-chmod +x /usr/local/bin/node
-cat << EOF > "/usr/local/bin/npm"
-#!/bin/bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-npm \$@ 
-EOF
-chmod +x /usr/local/bin/npm
 
 #install serverless framework
 echo "" && echo "Install Serverless npm package ---"
