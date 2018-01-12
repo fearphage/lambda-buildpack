@@ -31,7 +31,7 @@ npm install -g serverless
 
 # install deployer command line tool
 echo "" && echo "install deployer cli tool"
-pushd ${SCRIPTPATH}/../src/deployer && npm install -g
+pushd ${SCRIPTPATH}/../src/deployer && npm install 
 
 
 # deploy app to lambda
