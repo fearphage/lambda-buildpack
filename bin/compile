@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-
+export
+echo $SCRIPTPATH
 # install nvm, npm, node 6.5.0 
 echo "" && echo "Install Node ---- "
 chmod +x ${SCRIPTPATH}/../src/install-node.sh
@@ -13,6 +14,7 @@ npm install -g serverless
 # install deployer command line tool
 echo "" && echo "install deployer cli tool"
 pushd ${SCRIPTPATH}/../src/deployer && npm install -g
+
 
 # deploy app to lambda
 echo "" && echo "Call deployer on the app directory"
