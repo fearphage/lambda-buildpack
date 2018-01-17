@@ -8,8 +8,9 @@ var program = require('commander');
 var appDirValue
 program
     .version('0.1.0')
-    .option('-a, --path <absolute_path>', 'Absolute path to directory of app to deploy')
-    .option('-r, --runtime <runtime>', 'AWS platform runtime: node6.10 or node4.3' );
+    .option('-p, --path <absolute_path>', 'Absolute path to directory of app to deploy')
+    .option('-r, --runtime <runtime>', 'AWS platform runtime: node6.10 or node4.3' )
+    .option('-o, --orders <orders>', 'Path to the orders file for the app being deployed' );
 
 // Parse the arguments passed to the cli
 program.parse(process.argv);
@@ -30,13 +31,33 @@ if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
     process.exit(1)
 }
 
+if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
+    console.log('Supported runtimes values are nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
+    process.exit(1)
+}
+
+if (typeof program.orders == 'undefined'){
+    console.log('You must specify the orders file for the application being deployed')
+    process.exit(1)
+}
+
+if (! fs.existsSync(program.orders) ){
+    console.log('The orders file path you specified does not exist: ' + program.orders)
+    process.exit(1)
+}
+// --- Done with Parameter Validation
+
+// 1 - Copy build App directory to temp working directory
 const tmpDir = "tmp_app"
 console.log( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
-// 1 - Copy build App directory to temp working directory
 var cmd = "cp -a " + program.path + " ./" + tmpDir;
 stdout = execSync(cmd);
 
-// 2 - Create Serverless Framework config file in app root
+// 2 - Read Order File
+ordersCmds = fs.readFileSync(program.orders)
+console.log(ordersCmds) 
+
+// 3 - Create Serverless Framework config file in app root
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
@@ -52,20 +73,23 @@ yaml = Mustache.render(yaml, data )
 //  - Write the config file  
 fs.writeFileSync(tmpDir + '/serverless.yml',yaml);
 
-// 3 - Add lambda handler (index.hanlder) file to the app root
+// 4 - Add lambda handler (index.hanlder) file to the app root
 // Note: expects express app to be available in app.js file in the apps root directory
 console.log("Copying lambda handler file to app root")
 stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/index.js", {stdio:[0,1,2]});
 
-// 4 - Install serverless-http package needed to use express app in lambda
+// 5 - Install serverless-http package needed to use express app in lambda
 console.log("Installing serverless-http node package", {stdio:[0,1,2]})
 stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
 
-// 5 - Call serverless deploy on the temp app directory
+// 6 - Call serverless deploy on the temp app directory
 console.log("Deploying app to Lambda")
+// heroku hack - remove .heroku symlinks which contains symlinks that will break deploy
+stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
+// end heroku hack
 stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
 
-// 6 - Remove the temp app directory
+// 7 - Remove the temp app directory
 // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
 console.log('Done   ')
 
