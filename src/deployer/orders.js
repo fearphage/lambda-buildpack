@@ -18,6 +18,8 @@ Orders.prototype.getOneVar = function (ordersLine){
     var obj = {}
     obj.name = oneVar[0].trim();
     obj.value = oneVar[1].trim();
+    obj.value = obj.value.replace(/["'`]/g,'\\"');  // escape double quotes with backslash
+    console.log(obj.value)
 
     return obj
 }

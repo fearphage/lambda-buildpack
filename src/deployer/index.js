@@ -82,7 +82,6 @@ fs.writeFileSync(tmpDir + '/serverless.yml',yaml);
 console.log("Copying lambda handler file to app root")
 stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/index.js", {stdio:[0,1,2]});
 
-process.exit(1)
 // 5 - Install serverless-http package needed to use express app in lambda
 console.log("Installing serverless-http node package", {stdio:[0,1,2]})
 stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
