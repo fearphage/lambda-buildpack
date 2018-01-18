@@ -22,7 +22,13 @@ provider:
   runtime: {{ runtime }}
   deploymentBucket: {{ bucket }} 
   stage: {{ stage }} # dev
-  redfasdfsgion: {{ region }} # us-east-1
+  region: {{ region }} # us-east-1
+{{#hasEnvVars}}
+  environment:
+{{/hasEnvVars}}
+  {{#environment}}
+    {{name}}: "{{{value}}}" {{! Use triple braces to prevent escaping special html chars  }} 
+  {{/environment}}    
 
 # you can overwrite defaults here
 #  stage: dev

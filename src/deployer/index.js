@@ -3,6 +3,7 @@ const execSync = require('child_process').execSync;
 const Mustache = require('mustache')
 var fs = require('fs');
 var program = require('commander');
+var orders = require('./orders') 
 
 // Establish command api
 var appDirValue
@@ -50,12 +51,13 @@ if (! fs.existsSync(program.orders) ){
 // 1 - Copy build App directory to temp working directory
 const tmpDir = "tmp_app"
 console.log( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
-var cmd = "cp -a " + program.path + " ./" + tmpDir;
-stdout = execSync(cmd);
+// var cmd = "cp -a " + program.path + " ./" + tmpDir;
+// stdout = execSync(cmd);
 
 // 2 - Read Order File
-ordersCmds = fs.readFileSync(program.orders)
-console.log(ordersCmds) 
+console.log("### READ ORDER FILE")
+console.log("    ")
+envVars = orders.getVars(program.orders)
 
 // 3 - Create Serverless Framework config file in app root
 console.log('Writing  Serverless config to root app directory')
@@ -66,7 +68,9 @@ var data = {
     stage: "dev", 
     bucket: "starphleet-lambda-deploys", 
     region: "us-east-1",
-    runtime: program.runtime  
+    runtime: program.runtime,
+    hasEnvVars: envVars.length > 0,
+    environment: envVars
 }
 yaml = Mustache.render(yaml, data )
 
@@ -78,6 +82,7 @@ fs.writeFileSync(tmpDir + '/serverless.yml',yaml);
 console.log("Copying lambda handler file to app root")
 stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/index.js", {stdio:[0,1,2]});
 
+process.exit(1)
 // 5 - Install serverless-http package needed to use express app in lambda
 console.log("Installing serverless-http node package", {stdio:[0,1,2]})
 stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
