@@ -51,8 +51,8 @@ if (! fs.existsSync(program.orders) ){
 // 1 - Copy build App directory to temp working directory
 const tmpDir = "tmp_app"
 console.log( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
-// var cmd = "cp -a " + program.path + " ./" + tmpDir;
-// stdout = execSync(cmd);
+var cmd = "cp -a " + program.path + " ./" + tmpDir;
+stdout = execSync(cmd);
 
 // 2 - Read Order File
 console.log("### READ ORDER FILE")
