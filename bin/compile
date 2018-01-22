@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+## Depends on the following ENV Vars being defined
+# $SERVICE_GIT_URL  - the url of the git repo associated with the service
+# $ORDERS_NAME      - the name of the servie being deployed, i.e. 'auth'
+# $ORDERS_FILE      - Path to the orders file that contains env vars to be set
+
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Runtime not needed as part of buildpack, since it is included in lambda
@@ -53,6 +58,6 @@ pushd ${SCRIPTPATH}/../src/deployer && npm install
 # deploy app to lambda
 
 echo "" && echo "Call deployer on the app directory"
-node index.js --path $1 --runtime nodejs6.10 --orders $orders
+node index.js --path $1 --runtime nodejs6.10 --orders_path $ORDERS_FILE --git_url $SERVICE_GIT_URL --service $ORDERS_NAME
 
 set -o posix ; set
