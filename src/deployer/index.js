@@ -123,7 +123,7 @@ console.log("Deploying app to Lambda")
 // heroku hack - remove .heroku symlinks which contains symlinks that will break deploy
 stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
 // end heroku hack
-// stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
+stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
 
 // 7 - Remove the temp app directory
 // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
