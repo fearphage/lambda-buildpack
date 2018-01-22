@@ -91,8 +91,6 @@ yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
 branch = program.git_url.split("#")[1];  
 
-branch = 'raulreynoso'
-
 //   - setup template
 var data = {
     stage: branch, 
