@@ -4,6 +4,7 @@ const Mustache = require('mustache')
 var fs = require('fs');
 var program = require('commander');
 var orders = require('./orders') 
+var serviceInfo = require('./aws-service-info')
 
 // Establish command api
 var appDirValue
@@ -90,7 +91,6 @@ console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
 branch = program.git_url.split("#")[1];  
-console.log(branch)
 
 //   - setup template
 var data = {
@@ -103,7 +103,6 @@ var data = {
     service_name: program.service    
     
 }
-console.log(data)
 yaml = Mustache.render(yaml, data )
 
 //  - Write the config file  
@@ -116,14 +115,33 @@ stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/index.
 
 // 5 - Install serverless-http package needed to use express app in lambda
 console.log("Installing serverless-http node package", {stdio:[0,1,2]})
-stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
+ stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
 
 // 6 - Call serverless deploy on the temp app directory
 console.log("Deploying app to Lambda")
 // heroku hack - remove .heroku symlinks which contains symlinks that will break deploy
-stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
+ stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
 // end heroku hack
-stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
+ stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
+
+// 7 - Get meta data of AWS service and write it to file that can be sourced by shell scripts
+//   - Get output of serverless inco command
+var info = execSync("serverless info", { cwd: tmpDir }).toString('utf8');
+
+//   - Prase serverless info data
+ServiceInfo = new serviceInfo(info);
+var serviceData = ServiceInfo.getData();
+
+// Write template that exports required env vars
+envScript = fs.readFileSync("templates/aws-gateway-env-vars.sh.mst", 'utf-8')
+var view = {
+    url: serviceData.apiGatewayURL,
+    stage: serviceData.stage
+}
+envScript = Mustache.render(envScript, view )
+
+fs.writeFileSync(tmpDir + '/gateway_env_vars.sh',envScript);
+
 
 // 7 - Remove the temp app directory
 // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })

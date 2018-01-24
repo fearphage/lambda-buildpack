@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const fs = require('fs');
-const readline = require('readline') 
 
 function Orders () {
     return this;
