@@ -63,5 +63,3 @@ node index.js --path $1 --runtime nodejs6.10 --orders_file $ORDERS_FILE --git_ur
 # node CLI should create file containing env vars with service data
 chmod +x ./tmp_app/gateway_env_vars.sh
 source ./tmp_app/gateway_env_vars.sh
-
-set -o posix ; set
