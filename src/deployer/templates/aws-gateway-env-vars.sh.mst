@@ -1,0 +1,2 @@
+export LAMBDA_API_GATEWAY_URL={{{url}}} 
+export LAMBDA_API_GATEWAY_STAGE={{stage}}
