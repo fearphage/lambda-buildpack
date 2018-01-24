@@ -141,6 +141,10 @@ var view = {
 envScript = Mustache.render(envScript, view )
 
 fs.writeFileSync(tmpDir + '/gateway_env_vars.sh',envScript);
+console.log("WROTE -------");
+console.log(envScript);
+console.log("TO - ---------")
+console.log(tmpDir + '/gateway_env_vars.sh');
 
 
 // 7 - Remove the temp app directory
