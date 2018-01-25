@@ -136,19 +136,9 @@ var info = execSync("serverless info", { cwd: tmpDir }).toString('utf8');
 ServiceInfo = new serviceInfo(info);
 var serviceData = ServiceInfo.getData();
 
-// Write template that exports required env vars
-envScript = fs.readFileSync("templates/aws-gateway-env-vars.sh.mst", 'utf-8')
-var view = {
-    url: serviceData.apiGatewayURL,
-    stage: serviceData.stage
-}
-envScript = Mustache.render(envScript, view )
-
-fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.data", envScript);
-console.log("WROTE -------");
-console.log(envScript);
-console.log("TO - ---------")
-console.log(tmpDir + '/gateway_env_vars.sh');
+// Write files with var values to shared data folder
+fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.url", serviceData.apiGatewayURL);
+fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.stage", serviceData.stage);
 
 
 // 7 - Remove the temp app directory
