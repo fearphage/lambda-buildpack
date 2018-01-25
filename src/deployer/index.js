@@ -14,7 +14,8 @@ program
     .option('-r, --runtime <runtime>', 'AWS platform runtime: node6.10 or node4.3' )
     .option('-o, --orders_file <orders_file>', 'Path to the orders file for the app being deployed' )
     .option('-s, --service <service>', 'Name of the service being deployed' )
-    .option('-g, --git_url <git_url>', 'Git url for the service being deployed' );
+    .option('-g, --git_url <git_url>', 'Git url for the service being deployed' )
+    .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' );
 
 // Parse the arguments passed to the cli
 program.parse(process.argv);
@@ -55,9 +56,7 @@ if (typeof program.git_url == 'undefined'){
     console.log('You must specify the git url for the application being deployed')
     process.exit(1)
 }
-console.log(program.git_url.indexOf("#"))
-console.log(program.git_url.length - 1)
-console.log(program.git_url.split("#").length)
+
 // Character indicating branch ("#") must:  
 if( program.git_url.indexOf("#") <= 0   || // a - exist
     program.git_url.indexOf("#") == program.git_url.length - 1 || // b - not be the last character
@@ -67,6 +66,11 @@ if( program.git_url.indexOf("#") <= 0   || // a - exist
 }
 
 if (typeof program.service == 'undefined'){
+    console.log('You must specify service name using the --service or -s option')
+    process.exit(1)
+}
+
+if (typeof program.container_name == 'undefined'){
     console.log('You must specify service name using the --service or -s option')
     process.exit(1)
 }
@@ -140,7 +144,7 @@ var view = {
 }
 envScript = Mustache.render(envScript, view )
 
-fs.writeFileSync(tmpDir + '/gateway_env_vars.sh',envScript);
+fs.writeFileSync( '/var/data/' + orders.container_name +"-endpoint.data", envScript);
 console.log("WROTE -------");
 console.log(envScript);
 console.log("TO - ---------")
