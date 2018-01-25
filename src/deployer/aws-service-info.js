@@ -59,8 +59,10 @@ ServiceInfo.prototype.parseDataString = function (){
     urlParts = url.split(".");    
     this.data.apiGatewayID = urlParts[0];
     console.log(this.data)
-    // -- 5 Set Api Gateway Url
-    this.data.apiGatewayURL = "https://" + this.data.apiGatewayID + ".execute-api." + this.data.region + ".amazonaws.com";
+    // -- 5 Set Api Gateway HOST and Url
+    this.data.host = this.data.apiGatewayID + ".execute-api." + this.data.region + ".amazonaws.com";
+    this.data.url = "https://" + this.data.Host;
+    
 };
 
 ServiceInfo.prototype.getData = function(){

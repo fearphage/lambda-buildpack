@@ -137,7 +137,7 @@ ServiceInfo = new serviceInfo(info);
 var serviceData = ServiceInfo.getData();
 
 // Write files with var values to shared data folder
-fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.url", serviceData.apiGatewayURL);
+fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.host", serviceData.host);
 fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.stage", serviceData.stage);
 
 
