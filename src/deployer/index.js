@@ -144,7 +144,7 @@ var view = {
 }
 envScript = Mustache.render(envScript, view )
 
-fs.writeFileSync( '/var/data/' + orders.container_name +"-endpoint.data", envScript);
+fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.data", envScript);
 console.log("WROTE -------");
 console.log(envScript);
 console.log("TO - ---------")
