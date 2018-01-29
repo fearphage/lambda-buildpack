@@ -101,6 +101,7 @@ yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
 // No delimeter because stage is used for both api gateway stage and name.
 // Only alpanumeric chars work in both name and stage
+// To Do: If branch does not conform to naming rules, hash it and use that.
 branch = program.git_url.split("#")[1] + "" + program.hq_branch;  
 
 //   - setup template
