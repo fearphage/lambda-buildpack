@@ -99,7 +99,7 @@ envVars = orders.getVars(program.orders_file)
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
-branch = program.git_url.split("#")[1] + "_" + program.hq_branch;  
+branch = program.git_url.split("#")[1] + "-" + program.hq_branch;  
 
 //   - setup template
 var data = {
