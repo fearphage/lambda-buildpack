@@ -15,6 +15,7 @@ program
     .option('-o, --orders_file <orders_file>', 'Path to the orders file for the app being deployed' )
     .option('-s, --service <service>', 'Name of the service being deployed' )
     .option('-g, --git_url <git_url>', 'Git url for the service being deployed' )
+    .option('-h, --hq_branch <hq_branch>', 'Git branch for the headquarters used in the deploy' )
     .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' );
 
 // Parse the arguments passed to the cli
@@ -75,6 +76,10 @@ if (typeof program.container_name == 'undefined'){
     process.exit(1)
 }
 
+if (typeof program.hq_branch == 'undefined'){
+    console.log('You must specify service name using the headquarters branch being used using the --hq_branch or -h option')
+    process.exit(1)
+}
 
 
 // --- Done with Parameter Validation
@@ -94,7 +99,7 @@ envVars = orders.getVars(program.orders_file)
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
-branch = program.git_url.split("#")[1];  
+branch = program.git_url.split("#")[1] + "_" + program.hq_branch;  
 
 //   - setup template
 var data = {
