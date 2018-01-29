@@ -112,6 +112,8 @@ var data = {
     service_name: program.service    
     
 }
+console.log(data);
+
 yaml = Mustache.render(yaml, data )
 
 //  - Write the config file  
