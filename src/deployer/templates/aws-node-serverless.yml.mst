@@ -27,7 +27,7 @@ provider:
     - Ship
   usagePlan:
     quota:
-      limit:100000000
+      limit: 100000000
       offset: 0
       period: MONTH
     throttle:
@@ -51,3 +51,4 @@ functions:
       - http: 
           method: ANY
           path: /{proxy+}
+          private: true
