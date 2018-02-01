@@ -25,6 +25,7 @@ provider:
   region: {{ region }} # us-east-1
   apiKeys:
     - ShipTfjdklajfals
+    - Someotherkey
   usagePlan:
     quota:
       limit: 100000000
