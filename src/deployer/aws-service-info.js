@@ -69,5 +69,9 @@ ServiceInfo.prototype.getData = function(){
     console.log(this.data)
     return this.data;
 }
-
+ServiceInfo.prototype.getApiKey = function(){
+    apiKeys = this.data['api keys'];
+    values = Object.values(apikeys)
+    return values[0]
+}
 module.exports = ServiceInfo;
