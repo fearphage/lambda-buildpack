@@ -41,4 +41,3 @@ functions:
       - http: 
           method: ANY
           path: /{proxy+}
-          authorizer: aws_iam
