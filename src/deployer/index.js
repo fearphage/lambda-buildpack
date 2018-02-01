@@ -149,6 +149,7 @@ var serviceData = ServiceInfo.getData();
 // Write files with var values to shared data folder
 fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.host", serviceData.host);
 fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.stage", serviceData.stage);
+fs.writeFileSync( '/var/data/' + program.container_name +"-service-data", info);
 
 
 // 7 - Remove the temp app directory

@@ -24,7 +24,7 @@ provider:
   stage: {{ stage }} # dev
   region: {{ region }} # us-east-1
   apiKeys:
-    - Ship
+    - ShipTfjdklajfals
   usagePlan:
     quota:
       limit: 100000000
