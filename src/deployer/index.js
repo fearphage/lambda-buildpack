@@ -77,14 +77,17 @@ envVars = orders.getVars(program.orders_file)
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
-branch = program.container_name
+var stage = program.container_name
+// Remove service name from stage name, since this is part of the api gatway name
+stage = stage.replace(program.service,"");
 // Replace dash with X because dashes are not allowed in lambda stage names
-branch = branch.replace(/\-/g,'X');
+stage = stage.replace(/\-/g,'X');
 // Replace Underscore with Y because underscore is not allowed in API Gateway names
-branch = branch.replace(/_/g,'Y');
+stage = stage.replace(/_/g,'Y');
+
 //   - setup template
 var data = {
-    stage: branch, 
+    stage: stage, 
     bucket: "starphleet-lambda-deploys", 
     region: "us-east-1",
     runtime: program.runtime,
