@@ -14,8 +14,6 @@ program
     .option('-r, --runtime <runtime>', 'AWS platform runtime: node6.10 or node4.3' )
     .option('-o, --orders_file <orders_file>', 'Path to the orders file for the app being deployed' )
     .option('-s, --service <service>', 'Name of the service being deployed' )
-    .option('-g, --git_url <git_url>', 'Git url for the service being deployed' )
-    .option('-h, --hq_branch <hq_branch>', 'Git branch for the headquarters used in the deploy' )
     .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' );
 
 // Parse the arguments passed to the cli
@@ -52,20 +50,6 @@ if (! fs.existsSync(program.orders_file) ){
     process.exit(1)
 }
 
-
-if (typeof program.git_url == 'undefined'){
-    console.log('You must specify the git url for the application being deployed')
-    process.exit(1)
-}
-
-// Character indicating branch ("#") must:  
-if( program.git_url.indexOf("#") <= 0   || // a - exist
-    program.git_url.indexOf("#") == program.git_url.length - 1 || // b - not be the last character
-    program.git_url.split("#").length != 2 ) { // c - split string into array of exactly two elements
-    console.log('The service git url must specify the branch to deploy.')
-    process.exit(1)    
-}
-
 if (typeof program.service == 'undefined'){
     console.log('You must specify service name using the --service or -s option')
     process.exit(1)
@@ -76,12 +60,7 @@ if (typeof program.container_name == 'undefined'){
     process.exit(1)
 }
 
-if (typeof program.hq_branch == 'undefined'){
-    console.log('You must specify service name using the headquarters branch being used using the --hq_branch or -h option')
-    process.exit(1)
-}
-
-
+process.exit(0)
 // --- Done with Parameter Validation
 
 // 1 - Copy build App directory to temp working directory
@@ -99,11 +78,11 @@ envVars = orders.getVars(program.orders_file)
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
-// No delimeter because stage is used for both api gateway stage and name.
-// Only alpanumeric chars work in both name and stage
-// To Do: If branch does not conform to naming rules, hash it and use that.
-branch = program.git_url.split("#")[1] + "" + program.hq_branch;  
-
+branch = program.container_name
+// Replace dash with X because dashes are not allowed in lambda stage names
+branch = branch.replace(/\-/g,'X');
+// Replace Underscore with Y because underscore is not allowed in API Gateway names
+branch = branch.replace(/_/g,'Y');
 //   - setup template
 var data = {
     stage: branch, 
