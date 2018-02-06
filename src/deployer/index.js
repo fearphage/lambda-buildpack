@@ -60,7 +60,6 @@ if (typeof program.container_name == 'undefined'){
     process.exit(1)
 }
 
-process.exit(0)
 // --- Done with Parameter Validation
 
 // 1 - Copy build App directory to temp working directory
