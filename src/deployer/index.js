@@ -62,7 +62,7 @@ if (typeof program.container_name == 'undefined'){
 }
 
 if (typeof program.hq == 'undefined'){
-    console.log('You must specify HQ Remote using the --hq or -h option')
+    console.log('You must specify HQ Remote using the --hq or -h     option')
     process.exit(1)
 }
 // --- Done with Parameter Validation
@@ -106,7 +106,7 @@ var data = {
     runtime: program.runtime,
     hasEnvVars: envVars.length > 0,
     environment: envVars,
-    service_name: program.service    
+    service_name: service    
     
 }
 console.log(data);
