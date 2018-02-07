@@ -93,7 +93,7 @@ var ordersSha = parts.pop()
 
 // HQ name - remove unneeded prefix and replace invalid chars with -
 var hq = program.hq.replace("git@github.com:","");
-hq.replace(/[\/\.#]/g,"-") 
+hq = hq.replace(/[\/\.#]/g,"-") 
 
 var service =  program.service + "-" + hq + "-"+ serviceSha + "-"+ ordersSha
 
