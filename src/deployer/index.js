@@ -91,11 +91,7 @@ var serviceSha = parts.pop()
 // remove new last item - this is the orders sha
 var ordersSha = parts.pop()
 
-// HQ name - remove unneeded prefix and replace invalid chars with -
-var hq = program.hq.replace("git@github.com:","");
-hq = hq.replace(/[\/\.#]/g,"-") 
-
-var service =  program.service + "-" + hq + "-"+ serviceSha + "-"+ ordersSha
+var service =  program.service + "-" + serviceSha + "-"+ ordersSha
 
 
 //   - setup template
