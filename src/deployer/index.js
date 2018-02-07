@@ -14,7 +14,8 @@ program
     .option('-r, --runtime <runtime>', 'AWS platform runtime: node6.10 or node4.3' )
     .option('-o, --orders_file <orders_file>', 'Path to the orders file for the app being deployed' )
     .option('-s, --service <service>', 'Name of the service being deployed' )
-    .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' );
+    .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' )
+    .option('-h, --hq <hq>', 'location of the git remote for the headquarters ' )
 
 // Parse the arguments passed to the cli
 program.parse(process.argv);
@@ -60,6 +61,10 @@ if (typeof program.container_name == 'undefined'){
     process.exit(1)
 }
 
+if (typeof program.hq == 'undefined'){
+    console.log('You must specify HQ Remote using the --hq or -h option')
+    process.exit(1)
+}
 // --- Done with Parameter Validation
 
 // 1 - Copy build App directory to temp working directory
@@ -77,17 +82,25 @@ envVars = orders.getVars(program.orders_file)
 console.log('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
-var stage = program.container_name
-// Remove service name from stage name, since this is part of the api gatway name
-stage = stage.replace(program.service,"");
-// Replace dash with X because dashes are not allowed in lambda stage names
-stage = stage.replace(/\-/g,'X');
-// Replace Underscore with Y because underscore is not allowed in API Gateway names
-stage = stage.replace(/_/g,'Y');
+// Stage has following format
+// $HQ_$SHIP_OrdersSha_ServiceSha_
+
+var parts = program.container_name.split("-")
+// remove last item - this is the service sha
+var serviceSha = parts.pop()
+// remove new last item - this is the orders sha
+var ordersSha = parts.pop()
+
+// HQ name - remove unneeded prefix and replace invalid chars with -
+var hq = program.hq.replace("git@github.com:","");
+hq.replace(/[\/\.#]/g,"-") 
+
+var service =  program.service + "-" + hq + "-"+ serviceSha + "-"+ ordersSha
+
 
 //   - setup template
 var data = {
-    stage: stage, 
+    stage: "dev", 
     bucket: "starphleet-lambda-deploys", 
     region: "us-east-1",
     runtime: program.runtime,

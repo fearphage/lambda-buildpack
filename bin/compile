@@ -27,7 +27,7 @@ fi
 if [ -s "$NVM_DIR/nvm.sh" ]; then
     source  "$NVM_DIR/nvm.sh"  # This loads nvm
 fi    
-echo $HOME
+
 # install node v6.5.0 required by serverless
 nvm install 6.5.0
 
@@ -58,4 +58,4 @@ pushd ${SCRIPTPATH}/../src/deployer && npm install
 # deploy app to lambda
 
 echo "" && echo "Call deployer on the app directory"
-node index.js --path $1 --runtime nodejs6.10 --orders_file $ORDERS_FILE --service $ORDERS_NAME --container_name $CONTAINER_NAME
+node index.js --path $1 --runtime nodejs6.10 --orders_file $ORDERS_FILE --service $ORDERS_NAME --container_name $CONTAINER_NAME --hq $HEADQUARTERS_REMOTE --ship $SHIP

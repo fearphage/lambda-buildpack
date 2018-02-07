@@ -52,3 +52,11 @@ functions:
           method: ANY
           path: /{proxy+}
           private: true
+custom:
+  stage: "${opt:stage, self:provider.stage}"
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}-${self:custom.stage}
