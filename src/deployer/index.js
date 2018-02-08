@@ -91,7 +91,7 @@ var serviceSha = parts.pop()
 // remove new last item - this is the orders sha
 var ordersSha = parts.pop()
 
-var service =  program.service + "-" + serviceSha + "-"+ ordersSha
+var service =  program.service + "-"+ ordersSha + "-" + serviceSha
 
 
 //   - setup template
@@ -136,13 +136,7 @@ var info = execSync("serverless info", { cwd: tmpDir }).toString('utf8');
 ServiceInfo = new serviceInfo(info);
 var serviceData = ServiceInfo.getData();
 
-// Write files with var values to shared data folder
-fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.host", serviceData.host);
-fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.stage", serviceData.stage);
-fs.writeFileSync( '/var/data/' + program.container_name +"-endpoint.key", ServiceInfo.getApiKey());
-
-
-// 7 - Remove the temp app directory
+// 8 - Remove the temp app directory
 // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
 console.log('Done   ')
 
