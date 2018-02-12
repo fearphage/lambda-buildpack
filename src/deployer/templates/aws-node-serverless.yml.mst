@@ -62,29 +62,3 @@ resources:
       Type: AWS::ApiGateway::RestApi
       Properties:
         Name: ${self:service}-${self:custom.stage}
-        
-
-
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "logs:CreateLogStream"
-            ],
-            "Resource": [
-                "arn:aws:logs:us-east-1:054501475751:log-group:/aws/lambda/second-echo-cbf6799-fdad0d8-dev-api:*"
-            ],
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "logs:PutLogEvents"
-            ],
-            "Resource": [
-                "arn:aws:logs:us-east-1:054501475751:log-group:/aws/lambda/second-echo-cbf6799-fdad0d8-dev-api:*:*"
-            ],
-            "Effect": "Allow"
-        }
-    ]
-}
