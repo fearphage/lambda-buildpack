@@ -16,6 +16,7 @@ program
     .option('-s, --service <service>', 'Name of the service being deployed' )
     .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' )
     .option('-h, --hq <hq>', 'location of the git remote for the headquarters ' )
+    .option('-a, --account <account>', 'account ID of the AWS account being deployed to ' )
 
 // Parse the arguments passed to the cli
 program.parse(process.argv);
@@ -102,7 +103,8 @@ var data = {
     runtime: program.runtime,
     hasEnvVars: envVars.length > 0,
     environment: envVars,
-    service_name: service    
+    service_name: service,
+    aws_account:program.account    
     
 }
 console.log(data);
