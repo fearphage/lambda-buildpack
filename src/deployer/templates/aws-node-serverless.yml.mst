@@ -24,7 +24,7 @@ provider:
   stage: {{ stage }} # dev
   region: {{ region }} # us-east-1
   role: arn:aws:iam::{{ aws_account }}:role/lambda-deploy-function-role
-  cfnRole: arn:aws:iam::{{ aws_account }}:role/lambda-deploy-cfn-role
+  cfnRole: arn:aws:iam::{{ aws_account }}:role/lambda-deploy-cloudformation-role
   apiKeys:
     - {{ service_name }}-{{stage}}
   usagePlan:
