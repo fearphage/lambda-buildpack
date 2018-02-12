@@ -23,6 +23,7 @@ provider:
   deploymentBucket: {{ bucket }} 
   stage: {{ stage }} # dev
   region: {{ region }} # us-east-1
+  cfnRole: lambda-deploy-cfn-role
   apiKeys:
     - {{ service_name }}-{{stage}}
   usagePlan:
