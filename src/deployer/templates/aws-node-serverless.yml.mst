@@ -41,7 +41,9 @@ provider:
   {{#environment}}
     {{name}}: "{{{value}}}" {{! Use triple braces to prevent escaping special html chars  }} 
   {{/environment}}    
-
+  stackTags:
+    Type: starphleet-lambda
+    ServiceName: {{ service_name }} 
 functions:
   api:
     handler: index.handler
