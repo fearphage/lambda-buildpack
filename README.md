@@ -33,24 +33,25 @@ This is done via a scheduled job that asks each ship what service versions it is
 
 Therefore, if your ship does not include the `listContainers` forkulator command, the reaper will not know what services your ship is using, and they will be deleted.
 
-##### Add PUBLIC-forkulator to headquarters
-1. If it does not already exist, add the `PUBLIC-forkulator` directory to your headquarters 
+##### Add forkulator to headquarters
+1. If it does not already exist, add the `forkulator` directory to your headquarters 
 2. Add `orders` file with the following contents:
 
 ```
 export FORKULATOR_TEMP=/tmp
-export COMMAND_PATH=/var/data/PUBLIC-forkulator-commands
+export COMMAND_PATH=/var/data/forkulator-commands
 export PATH=${COMMAND_PATH}/bin:$PATH
 export HEALTHCHECK=/diagnostic
 export MAX_CONCURRENCY=250
 autodeploy https://github.com/igroff/forkulator.git#master
+export SECURITY_MODE=htpasswd
 ```
 
-##### Add PUBLIC-forkulator-commands to headquarters
-1. If it does not already exist, Add the `PUBLIC-forkulator-commands` directory to your headquarers
+##### Add forkulator-commands to headquarters
+1. If it does not already exist, Add the `forkulator-commands` directory to your headquarers
 2. Create a file named `remote` in this directory
 3. Contents of `remote` should be
 
 ```
-autodeploy git@github.com:glg/PUBLIC-forkulator-commands.git#lambda-deploy
+autodeploy git@github.com:glg/forkulator-commands.git#lambda-deploy
 ```
