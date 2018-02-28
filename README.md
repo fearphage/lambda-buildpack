@@ -55,3 +55,10 @@ export SECURITY_MODE=htpasswd
 ```
 autodeploy git@github.com:glg/forkulator-commands.git#lambda-deploy
 ```
+
+#### Ensure your DevShip has proper tag
+As stated above the AWS API reaper queries each DevShip to learn what service versions are active. The reaper finds your ship by looking for instances tagged with Type=devship.
+
+Tag your Devship with `Type=devship` in the AWS console.
+
+
