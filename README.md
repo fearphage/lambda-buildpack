@@ -1,6 +1,12 @@
 # lambda-buildpack
 Will deploy applicaiton to lambda. Must be used as part of multi-buildpack build.
 
+## Warnings
+#### Does not support `starphleet-retry-deploy` 
+Running `starphleet-retry-deploy` on the ship will cause your lambda service to be deleted.  `starphleet-retry-deploy` creates a new container using new SHA's that do not come from the GIT versions.  As a result, the lamda reaper process may conclude that your lambda service is not in use by any ship.  It will then delete the lambda service.
+
+TL;DR: Do not use `starphleet-retry-deploy` on any service deployed to lambda
+
 ## Usage
 To deploy to lambda do the following:
 
