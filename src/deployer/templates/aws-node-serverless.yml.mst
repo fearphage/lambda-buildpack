@@ -46,7 +46,7 @@ provider:
     ServiceName: {{ service_name }} 
 functions:
   api:
-    handler: index.handler
+    handler: lambda_index.handler
     events:
       - http: 
           path: /
