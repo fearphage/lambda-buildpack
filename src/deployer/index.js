@@ -98,7 +98,7 @@ var service =  program.service + "-"+ ordersSha + "-" + serviceSha
 //   - setup template
 var data = {
     stage: "dev", 
-    bucket: "starphleet-lambda-deploys", 
+    bucket: "starphleet-lambda-deploys-glgapp", 
     region: "us-east-1",
     runtime: program.runtime,
     hasEnvVars: envVars.length > 0,
