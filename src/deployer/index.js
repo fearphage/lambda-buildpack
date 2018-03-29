@@ -94,11 +94,15 @@ var ordersSha = parts.pop()
 
 var service =  program.service + "-"+ ordersSha + "-" + serviceSha
 
+var bucket = "starphleet-lambda-deploys-glgapp"
+if(process.env.AWS_ACCOUNT='glgdev'){
+    bucket = "starphleet-lambda-deploys"
+}
 
 //   - setup template
 var data = {
     stage: "dev", 
-    bucket: "starphleet-lambda-deploys-glgapp", 
+    bucket: bucket, 
     region: "us-east-1",
     runtime: program.runtime,
     hasEnvVars: envVars.length > 0,
