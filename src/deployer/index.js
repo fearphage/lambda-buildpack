@@ -95,7 +95,7 @@ var ordersSha = parts.pop()
 var service =  program.service + "-"+ ordersSha + "-" + serviceSha
 
 var bucket = "starphleet-lambda-deploys-glgapp"
-if(process.env.AWS_ACCOUNT='glgdev'){
+if(process.env.AWS_ACCOUNT == 'glgdev'){
     bucket = "starphleet-lambda-deploys"
 }
 
