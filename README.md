@@ -59,7 +59,7 @@ export SECURITY_MODE=htpasswd
 3. Contents of `remote` should be
 
 ```
-autodeploy git@github.com:glg/forkulator-commands.git#lambda-deploy
+autodeploy git@github.com:glg/forkulator-commands.git#serverless
 ```
 
 #### Ensure your DevShip has proper tag
