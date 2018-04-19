@@ -38,11 +38,6 @@ if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3' && program
     program.runtime = 'nodejs8.10'
 }
 
-if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
-    console.log('Supported runtimes values are nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
-    process.exit(1)
-}
-
 if (typeof program.orders_file == 'undefined'){
     console.log('You must specify the orders file for the application being deployed')
     process.exit(1)

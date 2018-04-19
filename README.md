@@ -23,6 +23,13 @@ Create an orders file that uses the multi buildpack.  For example:
 ```
 export BUILDPACK_URL='https://github.com/wballard/nginx-buildpack.git'
 ```
+Optionally, you can specify the nodejs runtime to use in lambda.  Lambda supports nodejs4.3, nodejs6.10, and nodejs8.10.  Version 8.10 will be used if a valid lambda runtime is not specified.
+
+```
+export BUILDPACK_URL='https://github.com/wballard/nginx-buildpack.git'
+export LAMBDA_RUNTIME=nodejs6.10
+```
+
 
 ### Step 3 - Add .buildpack files
 Add a `.bulidpack` file to the root directory of your app. This file should specify the buildpacks to use.  For example:
