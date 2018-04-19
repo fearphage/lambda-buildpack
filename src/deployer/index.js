@@ -33,7 +33,7 @@ if (typeof program.runtime == 'undefined'){
 }
 
 if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3' && program.runtime != 'nodejs8.10'){
-    console.log('Supported runtimes values are nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
+    console.log('Supported runtimes values are nodejs8.10, nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
     console.log('Setting runtime to nodejs8.10')
     program.runtime = 'nodejs8.10'
 }

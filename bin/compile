@@ -56,6 +56,10 @@ pushd ${SCRIPTPATH}/../src/deployer && npm install
 
 
 # deploy app to lambda
-
 echo "" && echo "Call deployer on the app directory"
-node index.js --path $1 --runtime $LAMBDA_RUNTIME --orders_file $ORDERS_FILE --service $ORDERS_NAME --container_name $CONTAINER_NAME --hq $HEADQUARTERS_REMOTE --account $AWS_ACCOUNT_NUMBER
+if [ -z "${LAMBDA_RUNTIME}"]; then
+    # Lambda runtime not specified so do not use the cli option.
+    node index.js --path $1 --orders_file $ORDERS_FILE --service $ORDERS_NAME --container_name $CONTAINER_NAME --hq $HEADQUARTERS_REMOTE --account $AWS_ACCOUNT_NUMBER
+else
+    node index.js --path $1 --runtime $LAMBDA_RUNTIME --orders_file $ORDERS_FILE --service $ORDERS_NAME --container_name $CONTAINER_NAME --hq $HEADQUARTERS_REMOTE --account $AWS_ACCOUNT_NUMBER
+fi
