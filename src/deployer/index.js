@@ -28,8 +28,7 @@ if (typeof program.path == 'undefined'){
 }
 
 if (typeof program.runtime == 'undefined'){
-    console.log('You must specify the runtime platform to deploy to.  Currently support nodejs6.10 and nodejs4.3')
-    process.exit(1)
+    program.runtime = 'nodejs8.10'
 }
 
 if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3' && program.runtime != 'nodejs8.10'){
