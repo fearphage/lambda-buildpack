@@ -32,9 +32,10 @@ if (typeof program.runtime == 'undefined'){
     process.exit(1)
 }
 
-if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
+if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3' && program.runtime != 'nodejs8.10'){
     console.log('Supported runtimes values are nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
-    process.exit(1)
+    console.log('Setting runtime to nodejs8.10')
+    program.runtime = 'nodejs8.10'
 }
 
 if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3'){
