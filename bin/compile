@@ -48,7 +48,7 @@ sudo ln -s "$n/bin/npm" "/usr/bin/npm"
 
 #install serverless framework
 echo "" && echo "Install Serverless npm package ---"
-npm install -g serverless
+npm install -g serverless@1.27.0
 
 # install deployer command line tool
 echo "" && echo "install deployer cli tool"
