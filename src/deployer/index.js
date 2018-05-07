@@ -125,6 +125,8 @@ console.log("Deploying app to Lambda")
 // end heroku hack
  stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
 
+ console.log(stdout)
+
 // 7 - Get meta data of AWS service and write it to file that can be sourced by shell scripts
 //   - Get output of serverless inco command
 var info = execSync("serverless info", { cwd: tmpDir }).toString('utf8');
@@ -132,6 +134,8 @@ var info = execSync("serverless info", { cwd: tmpDir }).toString('utf8');
 //   - Prase serverless info data
 ServiceInfo = new serviceInfo(info);
 var serviceData = ServiceInfo.getData();
+
+console.log(serviceData)
 
 // 8 - Remove the temp app directory
 // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
