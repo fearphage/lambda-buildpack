@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const fs = require('fs');
-
+const fs    = require('fs');
+const log   = require('./logger')
 function Orders () {
     return this;
 
@@ -10,7 +10,7 @@ Orders.prototype.getOneVar = function (ordersLine){
     var oneVar = line.split('=')    
 
     if( oneVar.length !== 2 ){
-        console.log("Bad Export format. Exiting: " +ordersLine)       
+        log.error("Bad Export format. Exiting: " +ordersLine)       
         process.exit(1)
     }
 
@@ -18,7 +18,7 @@ Orders.prototype.getOneVar = function (ordersLine){
     obj.name = oneVar[0].trim();
     obj.value = oneVar[1].trim();
     obj.value = obj.value.replace(/["'`]/g,'\\"');  // escape double quotes with backslash
-    console.log(obj.value)
+    log.info(obj.value)
 
     return obj
 }
@@ -37,7 +37,7 @@ Orders.prototype.getVars = function (filepath){
             envVars.push(self.getOneVar(line));
         }
     })   
-    console.log(envVars)
+    log.error(envVars)
     return envVars;
 
 }

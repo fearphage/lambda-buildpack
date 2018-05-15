@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-const execSync = require('child_process').execSync;
-const Mustache = require('mustache')
-var fs = require('fs');
-var program = require('commander');
-var orders = require('./orders') 
-var serviceInfo = require('./aws-service-info')
+const execSync      = require('child_process').execSync;
+const Mustache      = require('mustache')
+const fs            = require('fs');
+const program       = require('commander');
+const orders        = require('./orders') 
+const serviceInfo   = require('./aws-service-info')
+const log           = require('./logger')
+
+
 
 // Establish command api
 var appDirValue
@@ -23,55 +26,54 @@ program.parse(process.argv);
 
 // Require user to specify directory to deploy
 if (typeof program.path == 'undefined'){
-    console.error('You must specify the directory where the applicaiton to deploy is located');
+    log.error('You must specify the directory where the applicaiton to deploy is located');
     process.exit(1)
 }
 
 if (program.runtime != 'nodejs6.10' && program.runtime != 'nodejs4.3' && program.runtime != 'nodejs8.10'){
-    console.log('Supported runtimes values are nodejs8.10, nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
-    console.log('Setting runtime to nodejs8.10')
+    log.warn('Supported runtimes values are nodejs8.10, nodejs6.10 and nodejs4.3. You entered \'' + program.runtime + '\'')
+    log.warn('Setting runtime to nodejs8.10')
     program.runtime = 'nodejs8.10'
 }
 
 if (typeof program.orders_file == 'undefined'){
-    console.log('You must specify the orders file for the application being deployed')
+    log.error('You must specify the orders file for the application being deployed')
     process.exit(1)
 }
 
 if (! fs.existsSync(program.orders_file) ){
-    console.log('The orders file path you specified does not exist: ' + program.orders_file)
+    log.error('The orders file path you specified does not exist: ' + program.orders_file)
     process.exit(1)
 }
 
 if (typeof program.service == 'undefined'){
-    console.log('You must specify service name using the --service or -s option')
+    log.error('You must specify service name using the --service or -s option')
     process.exit(1)
 }
 
 if (typeof program.container_name == 'undefined'){
-    console.log('You must specify service name using the --service or -s option')
+    log.error('You must specify service name using the --service or -s option')
     process.exit(1)
 }
 
 if (typeof program.hq == 'undefined'){
-    console.log('You must specify HQ Remote using the --hq or -h     option')
+    log.error('You must specify HQ Remote using the --hq or -h     option')
     process.exit(1)
 }
 // --- Done with Parameter Validation
 
 // 1 - Copy build App directory to temp working directory
 const tmpDir = "tmp_app"
-console.log( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
+log.info( "Copying app directory '"+ program.path +"' to new temporary deploy directory ")
 var cmd = "cp -a " + program.path + " ./" + tmpDir;
 stdout = execSync(cmd);
 
 // 2 - Read Order File
-console.log("### READ ORDER FILE")
-console.log("    ")
+log.info("### READ ORDER FILE")
 envVars = orders.getVars(program.orders_file)
 
 // 3 - Create Serverless Framework config file in app root
-console.log('Writing  Serverless config to root app directory')
+log.info('Writing  Serverless config to root app directory')
 yaml = fs.readFileSync("templates/aws-node-serverless.yml.mst", 'utf-8')
 
 // Stage has following format
@@ -102,7 +104,7 @@ var data = {
     aws_account:program.account    
     
 }
-console.log(data);
+log.info(data);
 
 yaml = Mustache.render(yaml, data )
 
@@ -111,22 +113,22 @@ fs.writeFileSync(tmpDir + '/serverless.yml',yaml);
 
 // 4 - Add lambda handler (index.hanlder) file to the app root
 // Note: expects express app to be available in app.js file in the apps root directory
-console.log("Copying lambda handler file to app root")
+log.info("Copying lambda handler file to app root")
 stdout = execSync("cp -a ./templates/aws-node-handler.js ./" + tmpDir + "/lambda_index.js", {stdio:[0,1,2]});
 
 // 5 - Install serverless-http package needed to use express app in lambda
-console.log("Installing serverless-http node package", {stdio:[0,1,2]})
- stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
+log.info("Installing serverless-http node package", {stdio:[0,1,2]})
+stdout = execSync("npm i serverless-http", { cwd: tmpDir, stdio:[0,1,2]});
 
 // 6 - Call serverless deploy on the temp app directory
-console.log("Deploying app to Lambda")
+log.info("Deploying app to Lambda")
 // heroku hack - remove .heroku symlinks which contains symlinks that will break deploy
- stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
+stdout = execSync("rm -rf .heroku", { cwd: tmpDir, stdio:[0,1,2] });
 // end heroku hack
 
- stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
+stdout = execSync("serverless deploy", { cwd: tmpDir, stdio:[0,1,2] });
 
- console.log(stdout)
+log.info(stdout)
 
 try{
     // 7 - Get meta data of AWS service and write it to file that can be sourced by shell scripts
@@ -136,14 +138,14 @@ try{
     ServiceInfo = new serviceInfo(info);
     var serviceData = ServiceInfo.getData();
 
-    console.log(serviceData)
+    log.info(serviceData)
     // 8 - Remove the temp app directory
     // stdout = execSync("rm -rf ./" + tmpDir, { stdio:[0,1,2] })
-    console.log('Done   ')
+    log.info('Done   ')
 }
 catch(err){
-    console.log('Failed to Deploy')
-    console.log(error)
+    log.info('Failed to Deploy')
+    log.info(error)
 }
  
 

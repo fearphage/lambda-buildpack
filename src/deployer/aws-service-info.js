@@ -17,8 +17,9 @@ functions:
   api: aws-nodejs-dev-api
 
 */
-const fs = require('fs');
-const yaml = require('js-yaml')
+const fs    = require('fs');
+const yaml  = require('js-yaml')
+const log   = require('./logger')
 
 // Constructor takes string returned from cli call `searverless deploy` 
 function ServiceInfo (dataString) {
@@ -36,7 +37,7 @@ ServiceInfo.prototype.parseDataString = function (){
     var dataString = lines.join('\n')
     // -- 2 Add '-' before ANY in string to make endpoint values an array
     dataString = dataString.replace(/ANY/g, "- ANY")    
-    console.log(dataString);
+    log.info(dataString);
 
     this.data = yaml.safeLoad(dataString);
     
@@ -58,7 +59,7 @@ ServiceInfo.prototype.parseDataString = function (){
     url = this.data.endpoints[0].url.replace('https://','');
     urlParts = url.split(".");    
     this.data.apiGatewayID = urlParts[0];
-    console.log(this.data)
+    log.info(this.data)
     // -- 5 Set Api Gateway HOST and Url
     this.data.host = this.data.apiGatewayID + ".execute-api." + this.data.region + ".amazonaws.com";
     this.data.url = "https://" + this.data.Host;
@@ -66,7 +67,7 @@ ServiceInfo.prototype.parseDataString = function (){
 };
 
 ServiceInfo.prototype.getData = function(){
-    console.log(this.data)
+    log.info(this.data)
     return this.data;
 }
 ServiceInfo.prototype.getApiKey = function(){
