@@ -54,6 +54,10 @@ npm install -g serverless@1.27.0
 echo "" && echo "install deployer cli tool"
 pushd ${SCRIPTPATH}/../src/deployer && npm install 
 
+# Remove any AWS creds set in env vars
+# Creds should be obtained from EC2 instance role
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
 
 # deploy app to lambda
 echo "" && echo "Call deployer on the app directory"
