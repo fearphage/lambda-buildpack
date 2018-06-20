@@ -17,40 +17,31 @@ functions:
   api: aws-nodejs-dev-api
 
 */
+const fs = require('fs');
 const yaml = require('js-yaml')
 
-const stdin = process.stdin;
-const chunks = [];
+const data = yaml.safeLoad(fs.readFileSync('/dev/stdin', 'utf8')
+  .split('\n')
+  .slice(1)
+  .join('\n')
+  .replace(/ANY/g, '- ANY')
+);
+const endpoints = data.endpoints.map(line => {
+  const [method, url] = line.split(' - ');
 
-stdin.resume();
-stdin.setEncoding('utf8');
-
-stdin.on('data', chunks.push.bind(chunks));
-stdin.on('end', () => {
-  const data = yaml.safeLoad(chunks
-    .join('')
-    .split('\n')
-    .slice(1)
-    .join('\n')
-    .replace(/ANY/g, '- ANY')
-  );
-  const endpoints = data.endpoints.map(line => {
-    const [method, url] = line.split(' - ');
-
-    return {
-      method,
-      url,
-    };
-  });
-
-  const apiGatewayID = endpoints[0].url.match(/https:\/\/([^.]+)\./)[1];
-  const host = `${apiGatewayID}.execute-api.${data.region}.amazonaws.com`;
-
-  console.error('### serverless info');
-  console.log(Object.assign(data, {
-    apiGatewayID,
-    endpoints,
-    host,
-    url: `https://${host}`,
-  }));
+  return {
+    method,
+    url,
+  };
 });
+
+const apiGatewayID = endpoints[0].url.match(/https:\/\/([^.]+)\./)[1];
+const host = `${apiGatewayID}.execute-api.${data.region}.amazonaws.com`;
+
+console.error('### serverless info');
+console.log(Object.assign(data, {
+  apiGatewayID,
+  endpoints,
+  host,
+  url: `https://${host}`,
+}));
