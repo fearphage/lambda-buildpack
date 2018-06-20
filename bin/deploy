@@ -8,6 +8,11 @@ REMAINING_PARAMS=()
 SCRIPT_DIR='src/deployer'
 TEMP_DIR="$SCRIPT_DIR/tmp_app"
 
+function die {
+  >&2 echo "$@"
+  exit 1
+}
+
 function finish {
   popd > /dev/null 2>&1
 }
@@ -35,6 +40,9 @@ if [ -d $TEMP_DIR ]; then
 fi
 
 mkdir -p $TEMP_DIR
+
+# require user to specify deploy directory
+[ -n "$PROGRAM_PATH" ] || die 'You must specify the application directory (--path).'
 
 >&2 echo "Copying app directory '$PROGRAM_PATH' to new temp deploy directory"
 cp -a $PROGRAM_PATH $TEMP_DIR
