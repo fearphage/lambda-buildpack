@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o errexit
+set -o pipefail
+
+REMAINING_PARAMS=()
+SCRIPT_DIR='src/deployer'
+TEMP_DIR="$SCRIPT_DIR/tmp_app"
+
+function finish {
+  popd > /dev/null 2>&1
+}
+
+while [[ $# -gt 0 ]]; do
+  key=$1
+
+  # ignore everything that's not the path
+  case $key in
+    -p|--path)
+      PROGRAM_PATH=$2
+      shift
+      shift
+      ;;
+    *)
+      REMAINING_PARAMS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+
+if [ -d $TEMP_DIR ]; then
+  rm -rf $TEMP_DIR
+fi
+
+mkdir -p $TEMP_DIR
+
+>&2 echo "Copying app directory '$PROGRAM_PATH' to new temp deploy directory"
+cp -a $PROGRAM_PATH $TEMP_DIR
+
+node "$SCRIPT_DIR/parse-orders-file.js" "${REMAINING_PARAMS[@]}" \
+  | "$SCRIPT_DIR/node_modules/.bin/mustache" - "$SCRIPT_DIR/templates/aws-node-serverless.yml.mst" > $TEMP_DIR/serverless.yml
+
+pushd $TEMP_DIR > /dev/null 2>&1
+
+trap finish EXIT
+
+serverless deploy
+serverless info | node ../parse-serverless-info.js
