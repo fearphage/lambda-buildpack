@@ -1,45 +1,30 @@
-#!/usr/bin/env node
-const fs    = require('fs');
-const log   = require('./logger')
-function Orders () {
-    return this;
+const fs = require('fs');
 
-};  
-Orders.prototype.getOneVar = function (ordersLine){
-    var line = ordersLine.replace(/export\s/,'')
-    var oneVar = line.split('=')    
+// splits export line discarding surrounding quotes
+const reOrders = /^export\s+([^=]+)=(["'])?(.+)\2$/;
 
-    if( oneVar.length !== 2 ){
-        log.error("Bad Export format. Exiting: " +ordersLine)       
+function parseLine(ordersLine) {
+    var match = ordersLine.match(reOrders);
+
+    if (!match) {
+        console.error('Bad Export format. Exiting: %s', ordersLine);
         process.exit(1)
     }
 
-    var obj = {}
-    obj.name = oneVar[0].trim();
-    obj.value = oneVar[1].trim();
-    obj.value = obj.value.replace(/["'`]/g,'\\"');  // escape double quotes with backslash
-    log.info(obj.value)
-
-    return obj
-}
-Orders.prototype.getVars = function (filepath){
-    var self = this, envVars = [];
-    //  Get content of the orders file as a string
-    content = fs.readFileSync(filepath)
-    content = content.toString("utf8")
-
-    // Create an array of lines from file content and iterate
-    lines = content.match(/[^\r\n]+/g)
-    lines.forEach((line)=>{
-        // if line exports an evn var
-        if (line.match(/^export\s.*/) !== null){
-            // Add variable to env var array.
-            envVars.push(self.getOneVar(line));
-        }
-    })   
-    log.error(envVars)
-    return envVars;
-
+    return {
+      name: match[1].trim(),
+      // escape double quotes with backslash
+      value: match[3].trim().replace(/["'`]/g,'\\"'),
+    };
 }
 
-module.exports = new Orders();
+module.exports = path => fs.readFileSync(path, 'utf8')
+  .split(/[\r\n]+/g)
+  .reduce((result, line) => {
+    if (reOrders.test(line)) {
+      result.push(parseLine(line));
+    }
+
+    return result;
+  }, [])
+;

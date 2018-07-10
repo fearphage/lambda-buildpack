@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: {{ service_name }} 
+service: {{ service_name }}
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -20,7 +20,7 @@ frameworkVersion: "=1.27.0"
 provider:
   name: aws
   runtime: {{ runtime }}
-  deploymentBucket: {{ bucket }} 
+  deploymentBucket: {{ bucket }}
   stage: {{ stage }} # dev
   region: {{ region }} # us-east-1
   role: arn:aws:iam::{{ aws_account }}:role/lambda-deploy-function-role
@@ -35,24 +35,24 @@ provider:
     throttle:
       burstLimit: 9000
       rateLimit: 8000
-{{#hasEnvVars}}
+{{#environment.length}}
   environment:
-{{/hasEnvVars}}
+{{/environment.length}}
   {{#environment}}
-    {{name}}: "{{{value}}}" {{! Use triple braces to prevent escaping special html chars  }} 
-  {{/environment}}    
+    {{name}}: "{{{value}}}" {{! Use triple braces to prevent escaping special html chars  }}
+  {{/environment}}
   stackTags:
     Type: starphleet-lambda
-    ServiceName: {{ service_name }} 
+    ServiceName: {{ service_name }}
 functions:
   api:
     handler: lambda_index.handler
     events:
-      - http: 
+      - http:
           path: /
           method: ANY
           private: true
-      - http: 
+      - http:
           method: ANY
           path: /{proxy+}
           private: true
