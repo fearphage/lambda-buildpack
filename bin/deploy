@@ -5,8 +5,7 @@ set -o errexit
 set -o pipefail
 
 REMAINING_PARAMS=()
-SCRIPT_DIR='src/deployer'
-TEMP_DIR="$SCRIPT_DIR/tmp_app"
+TEMP_DIR="./tmp_app"
 
 function die {
   >&2 echo "$@"
@@ -50,7 +49,7 @@ cp -a "$PROGRAM_PATH" "$TEMP_DIR"
 set -x
 pwd
 node parse-orders-file.js "${REMAINING_PARAMS[@]}" \
-  | ./node_modules/.bin/mustache - "$SCRIPT_DIR/templates/aws-node-serverless.yml.mst" > $TEMP_DIR/serverless.yml
+  | ./node_modules/.bin/mustache - ./templates/aws-node-serverless.yml.mst > $TEMP_DIR/serverless.yml
 
 pushd $TEMP_DIR > /dev/null 2>&1
 
