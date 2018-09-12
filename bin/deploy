@@ -45,10 +45,12 @@ mkdir -p $TEMP_DIR
 [ -n "$PROGRAM_PATH" ] || die 'You must specify the application directory (--path).'
 
 >&2 echo "Copying app directory '$PROGRAM_PATH' to new temp deploy directory"
-cp -a $PROGRAM_PATH $TEMP_DIR
+cp -a "$PROGRAM_PATH" "$TEMP_DIR"
 
-node "$SCRIPT_DIR/parse-orders-file.js" "${REMAINING_PARAMS[@]}" \
-  | "$SCRIPT_DIR/node_modules/.bin/mustache" - "$SCRIPT_DIR/templates/aws-node-serverless.yml.mst" > $TEMP_DIR/serverless.yml
+set -x
+pwd
+node parse-orders-file.js "${REMAINING_PARAMS[@]}" \
+  | ./node_modules/.bin/mustache - "$SCRIPT_DIR/templates/aws-node-serverless.yml.mst" > $TEMP_DIR/serverless.yml
 
 pushd $TEMP_DIR > /dev/null 2>&1
 
