@@ -12,7 +12,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 NODE_VERSION_TO_INSTALL=10
 NVM_VERSION_TO_INSTALL=v0.33.11
 # NOTE (phd): Do we need to install a specific version isntead of the latest?
-SERVERLESS_VERSION_TO_INSTALL=1.27.0
+SERVERLESS_VERSION_TO_INSTALL=1.31.0
 
 # Runtime not needed as part of buildpack, since it is included in lambda
 # We use a node cli to deploy, it is installed in ./heroku directory.
@@ -22,12 +22,13 @@ rm -rf "$1/.heroku"
 
 # install nvm, npm, node
 echo
-echo "Install NVM v$NVM_VERSION_TO_INSTALL"
+echo "Install NVM $NVM_VERSION_TO_INSTALL"
 
 # install nvm
 # because script is run with sudo nvm is put in /root/.nvm making node unavailable to othe envs
 # therefore, we move nvm to /home/.nvm and mak it executable
 export NVM_DIR="$HOME/.nvm"
+mkdir -p "$NVM_DIR"
 if [ ! -s "$NVM_DIR/nvm.sh" ]; then
     curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION_TO_INSTALL/install.sh | bash
 fi
