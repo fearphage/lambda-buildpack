@@ -75,4 +75,5 @@ runtime_flag=${LAMBDA_RUNTIME:+"--runtime $LAMBDA_RUNTIME"}
   --service $ORDERS_NAME \
   --container_name $CONTAINER_NAME \
   --hq $HEADQUARTERS_REMOTE \
-  --account $AWS_ACCOUNT_NUMBER
+  --account $AWS_ACCOUNT_NUMBER \
+  --ship $SHIP_NAME

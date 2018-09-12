@@ -46,6 +46,7 @@ provider:
   stackTags:
     Type: starphleet-lambda
     ServiceName: {{ service_name }}
+    ShipName: {{ ship_name }}
 functions:
   api:
     handler: lambda_index.handler
