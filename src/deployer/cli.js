@@ -9,6 +9,7 @@ program
   .option('-n, --container_name <container_name>', 'The name of the lxc container in which we are running' )
   .option('-h, --hq <hq>', 'location of the git remote for the headquarters ' )
   .option('-a, --account <account>', 'account ID of the AWS account being deployed to ' )
+  .option('--ship <ship>', 'Name of the ship that has built this deployment.  Takes the form ip-172-121-12-11 ' )
 ;
 
 module.exports = argv => {
@@ -44,6 +45,9 @@ module.exports = argv => {
       console.log('You must specify HQ Remote using the --hq or -h option')
       process.exit(1)
   }
-
+  if (typeof params.ship == 'undefined'){
+    console.log('You must specify the ship name using the --ship option')
+    process.exit(1)
+}
   return params;
 };

@@ -35,6 +35,7 @@ const data = {
   aws_role: roleIndex > -1 ? parsedOrders[roleIndex].value : 'lambda-deploy-function-role',
   // defaults to private
   aws_private: securityIndex === -1 ? true : parsedOrders[roleIndex].value.toLower() !== 'public',
+  ship_name: program.ship
 };
 
 // just for debug purposes
