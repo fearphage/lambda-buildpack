@@ -8,7 +8,7 @@ const program = require('./cli')(process.argv);
 const parsedOrders = require('./orders')(program.orders_file);
 
 const AWS_ROLE_ORDER_NAME = 'AWS_ROLE';
-const AWS_SECURITY_ORDER_NAME = 'SECURITY_MODE';
+const AWS_SECURITY_ORDER_NAME = 'AWS_SECURITY_MODE';
 
 console.error('### READ ORDER FILE');
 console.error('    ');
