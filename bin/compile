@@ -29,6 +29,7 @@ echo "Install NVM v$NVM_VERSION_TO_INSTALL"
 # therefore, we move nvm to /home/.nvm and mak it executable
 export NVM_DIR="$HOME/.nvm"
 mkdir -p "$NVM_DIR"
+echo "I just made the nvm_dir: $NVM_DIR"
 if [ ! -s "$NVM_DIR/nvm.sh" ]; then
     curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION_TO_INSTALL/install.sh | bash
 fi
