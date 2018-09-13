@@ -12,7 +12,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 NODE_VERSION_TO_INSTALL=10
 NVM_VERSION_TO_INSTALL=v0.33.11
 # NOTE (phd): Do we need to install a specific version isntead of the latest?
-SERVERLESS_VERSION_TO_INSTALL=1.31.0
+SERVERLESS_VERSION_TO_INSTALL=1.29.0
 
 # Runtime not needed as part of buildpack, since it is included in lambda
 # We use a node cli to deploy, it is installed in ./heroku directory.
