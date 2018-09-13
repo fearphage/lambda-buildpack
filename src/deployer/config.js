@@ -1,9 +1,9 @@
-'use strict'
+
 
 const config = {
-    logger:{
-        level:'info'
-    }
-}
+  logger: {
+    level: 'info'
+  }
+};
 
-module.exports = config
+module.exports = config;

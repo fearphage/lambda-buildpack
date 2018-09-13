@@ -18,14 +18,14 @@ functions:
 
 */
 const fs = require('fs');
-const yaml = require('js-yaml')
+const yaml = require('js-yaml');
 
 const data = yaml.safeLoad(fs.readFileSync('/dev/stdin', 'utf8')
   .split('\n')
   .slice(1)
   .join('\n')
-  .replace(/ANY/g, '- ANY')
-);
+  .replace(/ANY/g, '- ANY'))
+;
 const endpoints = data.endpoints.map(line => {
   const [method, url] = line.split(' - ');
 

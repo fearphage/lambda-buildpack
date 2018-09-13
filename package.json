@@ -1,0 +1,30 @@
+{
+  "name": "lambda-buildpack",
+  "version": "1.0.0",
+  "description": "Will deploy applicaiton to lambda. Must be used as part of multi-buildpack build.",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.0",
+    "eslint-plugin-react": "^7.10.0",
+    "husky": "^1.0.0-rc.14"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glg/lambda-buildpack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/glg/lambda-buildpack/issues"
+  },
+  "homepage": "https://github.com/glg/lambda-buildpack#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}

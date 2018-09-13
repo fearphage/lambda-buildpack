@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable import/no-unresolved */
 const serverless = require('serverless-http');
 const app = require('./app');
 

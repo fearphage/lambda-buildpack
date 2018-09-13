@@ -1,21 +1,21 @@
-const winston = require('winston')
-const config = require('./config')
+const winston = require('winston');
+const config = require('./config');
 
-var logger = new winston.Logger({
-    transports: [
-      new winston.transports.Console({
-        handleExceptions: true, 
-        prettyPrint:true,
-        depth: 5,
-        stderrLevels:[], // Log everything to std out
-        level:config.logger.level,
-        formatter: function(options){
-            return `[${options.level.toUpperCase()}]: ${options.message}`
-        }
-      })      
-    ],
+const logger = new winston.Logger({
+  transports: [
+    new winston.transports.Console({
+      handleExceptions: true,
+      prettyPrint: true,
+      depth: 5,
+      stderrLevels: [], // Log everything to std out
+      level: config.logger.level,
+      formatter(options) {
+        return `[${options.level.toUpperCase()}]: ${options.message}`;
+      }
+    })
+  ],
 
-    exitOnError: false
-  });
+  exitOnError: false
+});
 
-module.exports = logger
+module.exports = logger;
