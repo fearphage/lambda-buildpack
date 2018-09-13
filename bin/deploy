@@ -46,10 +46,10 @@ mkdir -p $TEMP_DIR
 >&2 echo "Copying app directory '$PROGRAM_PATH' to new temp deploy directory"
 cp -a "$PROGRAM_PATH" "$TEMP_DIR"
 
-set -x
-pwd
 node parse-orders-file.js "${REMAINING_PARAMS[@]}" \
   | ./node_modules/.bin/mustache - ./templates/aws-node-serverless.yml.mst > $TEMP_DIR/serverless.yml
+
+cp ./templates/aws-node-handler.js $TEMP_DIR/lambda_index.js
 
 pushd $TEMP_DIR > /dev/null 2>&1
 
